@@ -3,7 +3,7 @@
   <div class="container">
     <Balance :total="total"/>
     <IncomeExpenses :income="income" :expense="expense"/>
-    <TransactionList :transactions="transactions"/>
+    <TransactionList :transactions="transactions" @transactionDeleted="handleTransactionDeleted"/>
     <AddTransaction @transactionSubmitted="handleTransactionSubmitted"/>
   </div>
 </template>
@@ -38,13 +38,20 @@ const income = computed(() => transactions.value.filter((transaction) => transac
 // calculating expense
 const expense = computed(() => transactions.value.filter((transaction) => transaction.amount < 0).reduce((acc, transaction) => (acc + transaction.amount), 0).toFixed(2));
 
+// add transaction
 const handleTransactionSubmitted = (transactionData) => {
   transactions.value.push({
     id: Math.floor(Math.random() * 1000000),
     text: transactionData.text,
     amount: transactionData.amount 
   });
-
   toast.success('Transaction added');
 };
+
+// delete transaction
+const handleTransactionDeleted = (id) => {
+  transactions.value = transactions.value.filter((transaction) => transaction.id !== id);
+  toast.success('Transaction deleted');
+};
+
 </script>

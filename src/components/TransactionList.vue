@@ -5,13 +5,17 @@
           :key="transaction.id" 
           :class="transaction.amount > 0 ? 'plus' : 'minus'"
         >
-          {{ transaction.text }} <span>{{ transaction.amount }}</span><button class="delete-btn">x</button>
+          {{ transaction.text }} <span>{{ transaction.amount }}</span>
+          <button @click="deleteTransaction(transaction.id)" class="delete-btn">x</button>
         </li>
       </ul>
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps, defineEmits } from 'vue';
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
 
 const props = defineProps({
   transactions: {
@@ -19,4 +23,11 @@ const props = defineProps({
     required: true
   },
 })
+
+const emit = defineEmits(['transactionDeleted']);
+
+const deleteTransaction = (id) => {
+  
+  emit('transactionDeleted', id);
+}
 </script>

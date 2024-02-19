@@ -33,13 +33,13 @@ onMounted(() => {
 });
 
 // calculating total
-const total = computed(() => transactions.value.reduce((acc, transaction) => (acc + transaction.amount), 0).toFixed(2));
+const total = computed(() => transactions.value.reduce((acc, transaction) => (acc + transaction.amount), 0));
 
 // calculating income
-const income = computed(() => transactions.value.filter((transaction) => transaction.amount > 0).reduce((acc, transaction) => (acc + transaction.amount), 0).toFixed(2));
+const income = computed(() => transactions.value.filter((transaction) => transaction.amount > 0).reduce((acc, transaction) => (acc + transaction.amount), 0));
 
 // calculating expense
-const expense = computed(() => transactions.value.filter((transaction) => transaction.amount < 0).reduce((acc, transaction) => (acc + transaction.amount), 0).toFixed(2));
+const expense = computed(() => transactions.value.filter((transaction) => transaction.amount < 0).reduce((acc, transaction) => (acc + transaction.amount), 0));
 
 // add transaction
 const handleTransactionSubmitted = (transactionData) => {

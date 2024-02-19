@@ -1,6 +1,6 @@
 <template>
     <h4>Your Balance</h4>
-    <h1 id="balance">${{ total }}</h1>
+    <h1 id="balance">{{ total != 0 ? (total > 0 ? `+$${total}` : `-$${total.toString().substring(1)}`) : `$${0}`  }}</h1>
   </template>
 
   <script setup>

@@ -4,7 +4,7 @@
     <Balance :total="total"/>
     <IncomeExpenses :income="income" :expense="expense"/>
     <TransactionList :transactions="transactions"/>
-    <AddTransaction/>
+    <AddTransaction @transactionSubmitted="handleTransactionSubmitted"/>
   </div>
 </template>
 
@@ -15,7 +15,11 @@ import IncomeExpenses from './components/IncomeExpenses.vue';
 import TransactionList from './components/TransactionList.vue';
 import AddTransaction from './components/AddTransaction.vue';
 
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
 
 // transaction list
 const transactions = ref([
@@ -26,11 +30,21 @@ const transactions = ref([
 ]);
 
 // calculating total
-const total = ref(transactions.value.reduce((acc, transaction) => (acc + transaction.amount), 0).toFixed(2));
+const total = computed(() => transactions.value.reduce((acc, transaction) => (acc + transaction.amount), 0).toFixed(2));
 
 // calculating income
-const income = ref(transactions.value.filter((transaction) => transaction.amount > 0).reduce((acc, transaction) => (acc + transaction.amount), 0).toFixed(2));
+const income = computed(() => transactions.value.filter((transaction) => transaction.amount > 0).reduce((acc, transaction) => (acc + transaction.amount), 0).toFixed(2));
 
 // calculating expense
-const expense = ref(transactions.value.filter((transaction) => transaction.amount < 0).reduce((acc, transaction) => (acc + transaction.amount), 0).toFixed(2));
+const expense = computed(() => transactions.value.filter((transaction) => transaction.amount < 0).reduce((acc, transaction) => (acc + transaction.amount), 0).toFixed(2));
+
+const handleTransactionSubmitted = (transactionData) => {
+  transactions.value.push({
+    id: Math.floor(Math.random() * 1000000),
+    text: transactionData.text,
+    amount: transactionData.amount 
+  });
+
+  toast.success('Transaction added');
+};
 </script>
